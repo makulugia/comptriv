@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import WeatherComparison from './components/WeatherComparison';
 
 function App() {
   const [city1, setCity1] = useState('');
@@ -43,6 +44,7 @@ function App() {
       console.error(error);
     }
   };
+
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       fetchData();
@@ -154,27 +156,7 @@ function App() {
           Compare
         </button>
       </div>
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>{city1.charAt(0).toLocaleUpperCase() + city1.slice(1)} Temp (°C)</th>
-              <th>{city2.charAt(0).toLocaleUpperCase() + city2.slice(1)} Temp (°C)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(weatherData[0]?.data || {}).map((date) => (
-              <tr key={date}>
-                <td>{date}</td>
-                {weatherData.map(({ data }) => (
-                  <td key={data[date]}>{data[date]?.toFixed(2) || '-'}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <WeatherComparison weatherData={weatherData} />
       <div className="graph-container">
         <canvas ref={graphRef} />
       </div>
